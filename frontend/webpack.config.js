@@ -9,9 +9,12 @@ const path              = require('path'),
       APP_DIR           = path.resolve(__dirname, 'src');
 
  const config = {
+  // setting entry point of webpack to src/index.jsx
   entry: `${APP_DIR}/index.jsx`,
   output: {
+    // output to dist/
     path: BUILD_DIR,
+    // dist/js/main.js
     filename: '/js/[name].js',
   },
   cache: true,
@@ -23,14 +26,12 @@ const path              = require('path'),
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'reAsk',
+      title: 'ninaTracker',
       xhtml: true,
       inject: false,
       template: require('html-webpack-template'),
       appMountId: 'root-container',
-      scripts: [
-        "/socket.io/socket.io.js"
-      ]
+      scripts: []
     }),
     new ExtractTextPlugin('/css/[name].css', {
       allChunks: true
