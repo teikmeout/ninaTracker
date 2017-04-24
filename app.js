@@ -7,14 +7,17 @@ const express             = require('express'),
       logger              = require('morgan'),
       bparser             = require('body-parser');
 
+// setting morgan to dev
 app.use(logger('dev'));
 
+// body-parser to JSON
 app.use(bparser.urlencoded({extended:true}));
 app.use(bparser.json());
 
-
+// routes
 app.use(require('./router.js'));
 
+// listen
 app.listen(PORT, () => {
   console.log(`🍙  ${PORT}`);
 });
