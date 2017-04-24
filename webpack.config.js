@@ -14,11 +14,10 @@ const path              = require('path'),
   output: {
     // output to dist/
     path: BUILD_DIR,
-    // dist/js/main.js
-    filename: '/js/[name].js',
+    // dist/js/main.js with a relative path
+    filename: './js/[name].js',
   },
   cache: true,
-  debug: true,
   devtool: 'eval-source-map',
   stats: {
     colors: true,
@@ -30,20 +29,27 @@ const path              = require('path'),
       xhtml: true,
       inject: false,
       template: require('html-webpack-template'),
-      appMountId: 'root-container',
+      appMountId: 'root',
       scripts: []
     }),
-    new ExtractTextPlugin('/css/[name].css', {
+    // same here, extract-text-plugin only takes one arg
+    new ExtractTextPlugin({
+      // remember to make this always a relative path
+      filename: './css/[name].css',
       allChunks: true
     })
   ],
 
   module : {
-    include: path.join(__dirname, 'src'),
+    // include: path.join(__dirname, 'src'),
     loaders: [
       {
         test: /\.css$/,
-        loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+        // loader: ExtractTextPlugin.extract('style-loader', 'css-loader')
+        // Extract text plugin only takes one argument now, so we change it like so
+        loader: ExtractTextPlugin.extract({
+          fallback: 'style-loader', use: 'css-loader'
+        })
       },
       // {
       //   test: /\.(jpe|jpg|woff|woff2|eot|ttf|svg)(\?.*$|$)/,
@@ -63,7 +69,7 @@ const path              = require('path'),
       {
         test: /\.(js|jsx)$/,
         exclude: /node_modules/,
-        loader: 'babel',
+        loader: 'babel-loader',
       },
       {
         test: /\.otf(\?v=\d+\.\d+\.\d+)?$/,
